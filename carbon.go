@@ -292,14 +292,6 @@ func (c *Carbon) ParseByDuration(duration string) *Carbon {
 	return c
 }
 
-// Format 格式化时间
-func (c *Carbon) Format(format string) string {
-	if c.Time.IsZero() {
-		return ""
-	}
-	return c.Time.In(c.loc).Format(format2layout(format))
-}
-
 // Today 今天
 func (c *Carbon) Today() string {
 	now := time.Now()
@@ -348,57 +340,40 @@ func (c *Carbon) EndOfYesterday() string {
 	return c.Yesterday() + " 23:59:59"
 }
 
-// FirstDayInYear 当年第一天
-func (c *Carbon) FirstOfYear() string {
-	return c.CreateFromDate(c.Time.Year(), 01, 01).ToDateStartString()
+// FirstDayInYear 年初
+func (c *Carbon) FirstOfYear() *Carbon {
+	return c.CreateFromDate(c.Time.Year(), 01, 01)
 }
 
-// LastDayInYear 当年最后一天
-func (c *Carbon) LastOfYear() string {
-	return c.CreateFromDate(c.Time.Year(), 12, 31).ToDateStartString()
+// LastDayInYear 年末
+func (c *Carbon) LastOfYear() *Carbon {
+	return c.CreateFromDate(c.Time.Year(), 12, 31)
 }
 
-// FirstDayInMonth 当月第一天
-func (c *Carbon) FirstOfMonth() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), 01).ToDateStartString()
+// FirstDayInMonth 月初
+func (c *Carbon) FirstOfMonth() *Carbon {
+	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), 01)
 }
 
-// LastDayInMonth 当月最后一天
-func (c *Carbon) LastOfMonth() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.getDays()).ToDateStartString()
+// LastDayInMonth 月末
+func (c *Carbon) LastOfMonth() *Carbon {
+	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.getDays())
 }
 
-// StartOfYear 当年开始时间
-func (c *Carbon) StartOfYear() string {
-	return c.CreateFromDate(c.Time.Year(), 01, 01).Format("2006-01-02 00:00:00")
+// Format 输出格式化时间,
+func (c *Carbon) Format(format string) string {
+	return c.ToFormatString(format)
 }
 
-// EndOfYear 当年结束时间
-func (c *Carbon) EndOfYear() string {
-	return c.CreateFromDateTime(c.Time.Year(), 12, 31, HoursPerDay-1, MinutesPerHour-1, SecondsPerMinute-1).Format("2006-01-02 15:04:05")
+// ToFormatString 输出格式化时间
+func (c *Carbon) ToFormatString(format string) string {
+	if c.Time.IsZero() {
+		return ""
+	}
+	return c.Time.In(c.loc).Format(format2layout(format))
 }
 
-// StartOfMonth 当月开始时间
-func (c *Carbon) StartOfMonth() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), 01).ToDateStartString()
-}
-
-// EndOfMonth 当月结束时间
-func (c *Carbon) EndOfMonth() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.getDays()).ToDateEndString()
-}
-
-// StartOfDay 当天开始时间
-func (c *Carbon) StartOfDay() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.Time.Day()).ToDateStartString()
-}
-
-// EndOfDay 当天结束时间
-func (c *Carbon) EndOfDay() string {
-	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.Time.Day()).ToDateEndString()
-}
-
-// ToDateTimeString 转日期时间字符串
+// 输出日期时间字符串
 func (c *Carbon) ToDateTimeString() string {
 	return c.Time.In(c.loc).Format("2006-01-02 15:04:05")
 }
@@ -577,42 +552,12 @@ func (c *Carbon) IsLastOfYear() bool {
 
 // IsFirstOfMonth 是否月初
 func (c *Carbon) IsFirstOfMonth() bool {
-	return c.ToDateTimeString() == c.FirstOfMonth()
+	return c.ToDateString() == c.FirstOfMonth().ToDateString()
 }
 
 // IsLastOfMonth 是否是月末
 func (c *Carbon) IsLastOfMonth() bool {
-	return c.ToDateTimeString() == c.LastOfMonth()
-}
-
-// IsStartOfYear 是否当年开始时间
-func (c *Carbon) IsStartOfYear() bool {
-	return c.ToDateTimeString() == c.StartOfYear()
-}
-
-// IsEndOfYear 是否当年结束时间
-func (c *Carbon) IsEndOfYear() bool {
-	return c.ToDateTimeString() == c.EndOfYear()
-}
-
-// IsStartOfMonth 是否当月开始时间
-func (c *Carbon) IsStartOfMonth() bool {
-	return c.ToDateTimeString() == c.StartOfMonth()
-}
-
-// IsEndOfMonth 是否当月结束时间
-func (c *Carbon) IsEndOfMonth() bool {
-	return c.ToDateTimeString() == c.EndOfMonth()
-}
-
-// IsStartOfDay 是否当天开始时间
-func (c *Carbon) IsStartOfDay() bool {
-	return c.ToDateTimeString() == c.StartOfDay()
-}
-
-// IsEndOfDay 是否当天结束时间
-func (c *Carbon) IsEndOfDay() bool {
-	return c.ToDateTimeString() == c.EndOfDay()
+	return c.ToDateString() == c.LastOfMonth().ToDateString()
 }
 
 // IsStartOfToday 是否今天开始时间

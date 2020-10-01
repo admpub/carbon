@@ -1,7 +1,6 @@
 package carbon
 
 import (
-	"fmt"
 	"testing"
 	"time"
 )
@@ -45,7 +44,7 @@ func TestCarbon_Tomorrow(t *testing.T) {
 func TestCarbon_FirstOfMonth(t *testing.T) {
 	now := time.Now()
 	e := now.AddDate(0, 0, -now.Day()+1).Format("2006-01-02 00:00:00")
-	r := New().Now().FirstOfMonth()
+	r := New().Now().FirstOfMonth().ToDateStartString()
 	if r != e {
 		t.Fatalf("Expected %s, but got %s", e, r)
 	}
@@ -54,7 +53,7 @@ func TestCarbon_FirstOfMonth(t *testing.T) {
 func TestCarbon_LastOfMonth(t *testing.T) {
 	now := time.Now()
 	e := now.AddDate(0, 0, -now.Day()+1).AddDate(0, 1, -1).Format("2006-01-02 00:00:00")
-	r := New().Now().LastOfMonth()
+	r := New().Now().LastOfMonth().ToDateStartString()
 	if r != e {
 		t.Fatalf("Expected %s, but got %s", e, r)
 	}
