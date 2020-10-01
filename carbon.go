@@ -292,54 +292,6 @@ func (c *Carbon) ParseByDuration(duration string) *Carbon {
 	return c
 }
 
-// Today 今天
-func (c *Carbon) Today() string {
-	now := time.Now()
-	return now.In(c.loc).Format("2006-01-02")
-}
-
-// StartOfToday 今天开始时间
-func (c *Carbon) StartOfToday() string {
-	return c.Today() + " 00:00:00"
-}
-
-// EndOfToday 今天结束时间
-func (c *Carbon) EndOfToday() string {
-	return c.Today() + " 23:59:59"
-}
-
-// Tomorrow 明天
-func (c *Carbon) Tomorrow() string {
-	tomorrow := time.Now().AddDate(0, 0, 1)
-	return tomorrow.In(c.loc).Format("2006-01-02")
-}
-
-// StartOfTomorrow 明天开始时间
-func (c *Carbon) StartOfTomorrow() string {
-	return c.Tomorrow() + " 00:00:00"
-}
-
-// EndOfTomorrow 明天结束时间
-func (c *Carbon) EndOfTomorrow() string {
-	return c.Tomorrow() + " 23:59:59"
-}
-
-// Yesterday 昨天
-func (c *Carbon) Yesterday() string {
-	yesterday := time.Now().AddDate(0, 0, -1)
-	return yesterday.In(c.loc).Format("2006-01-02")
-}
-
-// StartOfYesterday 昨天开始时间
-func (c *Carbon) StartOfYesterday() string {
-	return c.Yesterday() + " 00:00:00"
-}
-
-// EndOfYesterday 昨天结束时间
-func (c *Carbon) EndOfYesterday() string {
-	return c.Yesterday() + " 23:59:59"
-}
-
 // FirstDayInYear 年初
 func (c *Carbon) FirstOfYear() *Carbon {
 	return c.CreateFromDate(c.Time.Year(), 01, 01)
@@ -360,7 +312,7 @@ func (c *Carbon) LastOfMonth() *Carbon {
 	return c.CreateFromDate(c.Time.Year(), c.Time.Month(), c.getDays())
 }
 
-// Format 输出格式化时间,
+// Format 输出格式化时间，ToFormatString的简称
 func (c *Carbon) Format(format string) string {
 	return c.ToFormatString(format)
 }
@@ -373,42 +325,42 @@ func (c *Carbon) ToFormatString(format string) string {
 	return c.Time.In(c.loc).Format(format2layout(format))
 }
 
-// 输出日期时间字符串
+// ToDateTimeString 输出日期时间字符串
 func (c *Carbon) ToDateTimeString() string {
 	return c.Time.In(c.loc).Format("2006-01-02 15:04:05")
 }
 
-// ToDateString 转日期字符串
+// ToDateString 输出日期字符串
 func (c *Carbon) ToDateString() string {
 	return c.Time.In(c.loc).Format("2006-01-02")
 }
 
-// ToDateStartString 转日期开始时间字符串
+// ToDateStartString 输出日期开始时间字符串
 func (c *Carbon) ToDateStartString() string {
 	return c.Time.In(c.loc).Format("2006-01-02 00:00:00")
 }
 
-// ToDateEndString 转日期结束时间字符串
+// ToDateEndString 输出日期结束时间字符串
 func (c *Carbon) ToDateEndString() string {
 	return c.CreateFromDateTime(c.Time.Year(), c.Time.Month(), c.Time.Day(), HoursPerDay-1, MinutesPerHour-1, SecondsPerMinute-1).Format("2006-01-02 15:04:05")
 }
 
-// ToTimeString 转时间字符串
+// ToTimeString 输出时间字符串
 func (c *Carbon) ToTimeString() string {
 	return c.Time.In(c.loc).Format("15:04:05")
 }
 
-// ToTimeStartString 转开始时间字符串
+// ToTimeStartString 输出开始时间字符串
 func (c *Carbon) ToTimeStartString() string {
 	return c.Time.In(c.loc).Format("15:00:00")
 }
 
-// ToDateEndString 转结束时间字符串
+// ToDateEndString 输出结束时间字符串
 func (c *Carbon) ToTimeEndString() string {
 	return c.CreateFromDateTime(c.Time.Year(), c.Time.Month(), c.Time.Day(), c.Time.Hour(), MinutesPerHour-1, SecondsPerMinute-1).Format("15:04:05")
 }
 
-// ToTimestamp 转时间戳
+// ToTimestamp 输出时间戳
 func (c *Carbon) ToTimestamp() int64 {
 	return c.Time.Unix()
 }
